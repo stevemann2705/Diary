@@ -298,6 +298,11 @@ public class LoginActivity extends AppCompatActivity{
 
                     @Override
                     protected Object doInBackground(Object[] params) {
+<<<<<<< Updated upstream
+=======
+
+
+>>>>>>> Stashed changes
                         Calendar instance = Calendar.getInstance();
                         Date date = instance.getTime();
                         int year1 = date.getYear() - 100;
@@ -306,6 +311,10 @@ public class LoginActivity extends AppCompatActivity{
                         String dfilename = "test.rtf";
                         String efilename = dat1 + "-" + month1 + "-" + year1 + ".diary";
                         String keyGot = mAuthTask.getKeyGot();
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
                         for (; month1 > 5; ) {
                             if (!(new File(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + "LOG").exists())) {
                                 String inputfilename = dat1 + "-" + month1 + "-" + year1 + ".diary";
@@ -511,7 +520,7 @@ public class LoginActivity extends AppCompatActivity{
                 e.printStackTrace();
             }
             Log.d("PASS", passGot);
-            Log.d("KEY", keyGot);
+            //Log.d("KEY", keyGot);
             new File(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + setupTemp).delete();
 
 

@@ -168,6 +168,12 @@ public class SetupActivity extends AppCompatActivity {
         }
 
         new File(fileDir.getAbsolutePath()+"/"+fileDir2+"/"+setupTemp).delete();
+        try {
+            new File(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + "LOG").createNewFile();
+            new File(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + "AES").createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
         //Toast.makeText(getApplicationContext(),"For security reasons, we need to restart the app. This is a natural process. Just start the app again.\nThank You for using Personal Diary. (made by Steve Mann)",Toast.LENGTH_LONG);
