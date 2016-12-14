@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Diary v7.0 (Gookhastrov) for Android"
+        android:text="Diary v8.0 (Hilanivik) for Android"
         android:id="@+id/textView12"
         android:layout_below="@+id/textView11"
         android:layout_centerHorizontal="true"
@@ -50,7 +50,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Diary is your friend, you can share your thoughts and secrets with. Diary uses Triple-DES Encryption Mechanism to ensure your secrets remain safe."
+        android:text="Diary is your friend, you can share your thoughts and secrets with. Diary now uses AES/GCM Encryption Mechanism to ensure your secrets remain safe and secure"
         android:id="@+id/textView15"
         android:textAlignment="center"
         android:layout_marginTop="23dp"
@@ -63,7 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="This app is compatible with logs of Diary© v5.0 or above for PC."
+        android:text="I would sincerely like to thank Jeff Gonzalez for his contribution to this project. He was really helpful."
         android:id="@+id/textView16"
         android:layout_marginTop="22dp"
         android:textAlignment="center"
@@ -86,23 +86,35 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="MackMannBlog"
-        android:id="@+id/textView10"
-        android:textAlignment="center"
-        android:layout_marginBottom="42dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/light"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="-------------------------------------------------------------------"
         android:id="@+id/textView17"
         android:layout_below="@+id/textGreet"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="26dp"
         android:textColor="@color/light"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MackMannBlog"
+        android:id="@+id/textView10"
+        android:textAlignment="center"
+        android:layout_marginBottom="32dp"
+        android:textColor="@color/light"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:text="@string/stevemannwebsite"
+        android:layout_width="wrap_content"
+        android:autoLink="web"
+        android:textColor="#fff5b8"
+        android:textColorLink="#fff5b8"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView8"
+        android:layout_above="@+id/textView10"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp" />
 
 
 </RelativeLayout>

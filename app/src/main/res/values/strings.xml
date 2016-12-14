@@ -35,4 +35,5 @@
         <item>About</item>
     </string-array>
     <string name="title_activity_change_password">ChangePasswordActivity</string>
+    <string name="stevemannwebsite"><a href="https://www.stevemann.in">www.stevemann.in</a></string>
 </resources>

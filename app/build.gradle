@@ -9,8 +9,8 @@ android {
         applicationId "com.steve.diary.diary"
         minSdkVersion 19
         targetSdkVersion 22
-        versionName 'Hilanivik(Beta)'
-        versionCode 7
+        versionName 'Hilanivik'
+        versionCode 8
     }
     buildTypes {
         release {
