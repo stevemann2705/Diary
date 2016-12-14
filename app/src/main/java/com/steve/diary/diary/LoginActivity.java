@@ -201,7 +201,12 @@ public class LoginActivity extends AppCompatActivity{
                 e.printStackTrace();
             }
             new File(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + setupTemp).delete();
+            Toast.makeText(getApplicationContext(), "Login Encrypted Successfully", Toast.LENGTH_SHORT)
+                    .show();
         }
+
+
+
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -288,12 +293,108 @@ public class LoginActivity extends AppCompatActivity{
             // perform the user login attempt.
             showProgress(true);
             mAuthTask = new UserLoginTask(password);
-            mAuthTask.execute();
-            Toast.makeText(getApplicationContext(), "ALL Encrypted Successfully", Toast.LENGTH_SHORT)
-                    .show();
+            if (!(new File(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + "LOG").exists())) {
+                new AsyncTask() {
+
+                    @Override
+                    protected Object doInBackground(Object[] params) {
+                        Calendar instance = Calendar.getInstance();
+                        Date date = instance.getTime();
+                        int year1 = date.getYear() - 100;
+                        int dat1 = date.getDate();
+                        int month1 = date.getMonth() + 1;
+                        String dfilename = "test.rtf";
+                        String efilename = dat1 + "-" + month1 + "-" + year1 + ".diary";
+                        String keyGot = mAuthTask.getKeyGot();
+                        for (; month1 > 5; ) {
+                            if (!(new File(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + "LOG").exists())) {
+                                String inputfilename = dat1 + "-" + month1 + "-" + year1 + ".diary";
+                                try {
+                                    FileInputStream fis1 = new FileInputStream(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + inputfilename);
+                                    FileOutputStream fos1 = new FileOutputStream(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + dat1 + "-" + month1 + "-" + year1 + "1.txt");
+                                    Encyption.preDecrypt(keyGot, fis1, fos1);
+                                    fis1.close();
+                                    fos1.close();
+                                    //labelStatus.setText("Opened Successfully.");
+                                    //new JLabelCleaner(5, labelStatus).startCountdownFromNow();
+                                } catch (FileNotFoundException e) {
+                                    //labelStatus.setText("Error: File Not Found");
+                                    //new JLabelCleaner(5, labelStatus).startCountdownFromNow();
+                                } catch (Throwable e) {
+                                    //labelStatus.setText("Read Error.");
+                                    //new JLabelCleaner(5, labelStatus).startCountdownFromNow();
+                                }
+                                try {
+                                    FileInputStream fis1 = new FileInputStream(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + dat1 + "-" + month1 + "-" + year1 + "1.txt");
+                                    FileOutputStream fos1 = new FileOutputStream(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + dat1 + "-" + month1 + "-" + year1 + "2.txt");
+                                    Encyption.preDecrypt(keyGot, fis1, fos1);
+                                    fis1.close();
+                                    fos1.close();
+                                    //labelStatus.setText("Opened Successfully.");
+                                    //new JLabelCleaner(5, labelStatus).startCountdownFromNow();
+                                } catch (FileNotFoundException e) {
+                                    //labelStatus.setText("Error: File Not Found");
+                                    //new JLabelCleaner(5, labelStatus).startCountdownFromNow();
+                                } catch (Throwable e) {
+                                    //labelStatus.setText("Read Error.");
+                                    //new JLabelCleaner(5, labelStatus).startCountdownFromNow();
+                                }
+                                try {
+                                    FileInputStream fis1 = new FileInputStream(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + dat1 + "-" + month1 + "-" + year1 + "2.txt");
+                                    FileOutputStream fos1 = new FileOutputStream(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + dfilename);
+                                    Encyption.preDecrypt(keyGot, fis1, fos1);
+                                    fis1.close();
+                                    fos1.close();
+                                    //labelStatus.setText("Opened Successfully.");
+                                    //new JLabelCleaner(5, labelStatus).startCountdownFromNow();
+                                } catch (FileNotFoundException e) {
+                                    //labelStatus.setText("Error: File Not Found");
+                                    //new JLabelCleaner(5, labelStatus).startCountdownFromNow();
+                                } catch (Throwable e) {
+                                    //labelStatus.setText("Read Error.");
+                                    //new JLabelCleaner(5, labelStatus).startCountdownFromNow();
+                                }
+                                new File(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + dat1 + "-" + month1 + "-" + year1 + "2.txt").delete();
+                                new File(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + dat1 + "-" + month1 + "-" + year1 + "1.txt").delete();
+                                new File(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + inputfilename).delete();
+
+                                try {
+
+                                    FileInputStream fis = new FileInputStream(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + dfilename);
+                                    FileOutputStream fos = new FileOutputStream(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + dat1 + "-" + month1 + "-" + year1 + ".diary");
+                                    Encyption.encrypt(keyGot, fis, fos);
+                                    fis.close();
+                                    fos.close();
+
+                                } catch (Throwable e) {
+
+                                }
+                                new File(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + dfilename).delete();
+
+
+                                dat1--;
+                                if (dat1 == 0) {
+                                    dat1 = 31;
+                                    month1--;
+                                }
+                            }
+                        }
+
+
+                        try {
+                            new File(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + "LOG").createNewFile();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                        return null;
+                    }
+                }.execute();
+            }
             mAuthTask.de();
         }
     }
+
+
 
 
 
@@ -417,6 +518,7 @@ public class LoginActivity extends AppCompatActivity{
         }
 
 
+
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
@@ -424,98 +526,10 @@ public class LoginActivity extends AppCompatActivity{
             // Simulate network access.
             //Thread.sleep(2000);
 
-            for (; month1 > 5; ) {
-                if (!(new File(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + "LOG").exists())) {
-                    String inputfilename = dat1 + "-" + month1 + "-" + year1 + ".diary";
-                    try {
-                        FileInputStream fis1 = new FileInputStream(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + inputfilename);
-                        FileOutputStream fos1 = new FileOutputStream(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + dat1 + "-" + month1 + "-" + year1 + "1.txt");
-                        Encyption.preDecrypt(keyGot, fis1, fos1);
-                        fis1.close();
-                        fos1.close();
-                        //labelStatus.setText("Opened Successfully.");
-                        //new JLabelCleaner(5, labelStatus).startCountdownFromNow();
-                    } catch (FileNotFoundException e) {
-                        //labelStatus.setText("Error: File Not Found");
-                        //new JLabelCleaner(5, labelStatus).startCountdownFromNow();
-                    } catch (Throwable e) {
-                        //labelStatus.setText("Read Error.");
-                        //new JLabelCleaner(5, labelStatus).startCountdownFromNow();
-                    }
-                    try {
-                        FileInputStream fis1 = new FileInputStream(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + dat1 + "-" + month1 + "-" + year1 + "1.txt");
-                        FileOutputStream fos1 = new FileOutputStream(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + dat1 + "-" + month1 + "-" + year1 + "2.txt");
-                        Encyption.preDecrypt(keyGot, fis1, fos1);
-                        fis1.close();
-                        fos1.close();
-                        //labelStatus.setText("Opened Successfully.");
-                        //new JLabelCleaner(5, labelStatus).startCountdownFromNow();
-                    } catch (FileNotFoundException e) {
-                        //labelStatus.setText("Error: File Not Found");
-                        //new JLabelCleaner(5, labelStatus).startCountdownFromNow();
-                    } catch (Throwable e) {
-                        //labelStatus.setText("Read Error.");
-                        //new JLabelCleaner(5, labelStatus).startCountdownFromNow();
-                    }
-                    try {
-                        FileInputStream fis1 = new FileInputStream(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + dat1 + "-" + month1 + "-" + year1 + "2.txt");
-                        FileOutputStream fos1 = new FileOutputStream(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + dfilename);
-                        Encyption.preDecrypt(keyGot, fis1, fos1);
-                        fis1.close();
-                        fos1.close();
-                        //labelStatus.setText("Opened Successfully.");
-                        //new JLabelCleaner(5, labelStatus).startCountdownFromNow();
-                    } catch (FileNotFoundException e) {
-                        //labelStatus.setText("Error: File Not Found");
-                        //new JLabelCleaner(5, labelStatus).startCountdownFromNow();
-                    } catch (Throwable e) {
-                        //labelStatus.setText("Read Error.");
-                        //new JLabelCleaner(5, labelStatus).startCountdownFromNow();
-                    }
-                    new File(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + dat1 + "-" + month1 + "-" + year1 + "2.txt").delete();
-                    new File(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + dat1 + "-" + month1 + "-" + year1 + "1.txt").delete();
-                    new File(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + inputfilename).delete();
-
-                    try {
-
-                        FileInputStream fis = new FileInputStream(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + dfilename);
-                        FileOutputStream fos = new FileOutputStream(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + dat1 + "-" + month1 + "-" + year1 + ".diary");
-                        Encyption.encrypt(keyGot, fis, fos);
-                        fis.close();
-                        fos.close();
-
-                    } catch (Throwable e) {
-
-                    }
-                    new File(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + dfilename).delete();
 
 
 
-
-
-                    dat1--;
-                    if (dat1 == 0) {
-                        dat1 = 31;
-                        month1--;
-                    }
-                }
-            }
-
-
-
-
-
-
-
-            try {
-                new File(fileDir.getAbsolutePath() + "/" + fileDir2 + "/" + "LOG").createNewFile();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-
-
-
-            return true;
+            return null;
         }
 
 
@@ -526,6 +540,8 @@ public class LoginActivity extends AppCompatActivity{
         @Override
         protected void onPostExecute(final Boolean success) {
 
+            Toast.makeText(getApplicationContext(), "ALL Encrypted Successfully", Toast.LENGTH_SHORT)
+                    .show();
             mAuthTask = null;
             showProgress(false);
 

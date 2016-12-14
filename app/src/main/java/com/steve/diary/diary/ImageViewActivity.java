@@ -9,7 +9,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -34,24 +33,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.Arrays;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
-import javax.crypto.spec.GCMParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 
 public class ImageViewActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -64,12 +56,8 @@ public class ImageViewActivity extends AppCompatActivity implements NavigationVi
     ImageView imgView;
     String imagepath, imageEnc;
 
-    //static Cipher cipher = null;
-    //SecretKey desKey;
-
-    Cipher cipher;
-    SecretKeySpec skeySpec;
-    GCMParameterSpec ivspec;
+    static Cipher cipher = null;
+    SecretKey desKey;
 
     public void onBackPressed() {
             Intent intent = new Intent(this, MainActivity.class);
@@ -118,10 +106,7 @@ public class ImageViewActivity extends AppCompatActivity implements NavigationVi
         //Log.d("IMAGEDATE",date+"-"+month+"-"+year);
         imgView = (ImageView) findViewById(R.id.imageView);
 
-        //DESKeySpec dks = null;
-
-
-        /*
+        DESKeySpec dks = null;
         try {
             dks = new DESKeySpec(MainActivity.keyGot.getBytes());
             SecretKeyFactory skf = SecretKeyFactory.getInstance("DES");
@@ -134,36 +119,6 @@ public class ImageViewActivity extends AppCompatActivity implements NavigationVi
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (InvalidKeySpecException e) {
-            e.printStackTrace();
-        }
-        */
-
-        byte[] mykey = new byte[0];
-        try {
-            mykey = MainActivity.keyGot.getBytes("UTF-8");
-            MessageDigest sha = MessageDigest.getInstance("SHA-1");
-            mykey = sha.digest(mykey);
-            mykey = Arrays.copyOf(mykey, 16);
-            KeyGenerator keygen = KeyGenerator.getInstance("AES");
-            keygen.init(128);  // To use 256 bit keys, you need the "unlimited strength" encryption policy files from Sun.
-            //byte[] key = Diary.userKey.getBytes();
-            skeySpec = new SecretKeySpec(mykey, "AES");
-
-            // build the initialization vector (randomly).
-            //SecureRandom random = new SecureRandom();
-            //byte iv[] = new byte[16];//generate random 16 byte IV AES is always 16bytes
-            //random.nextBytes(iv);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                ivspec = new GCMParameterSpec(128,mykey);
-            }
-
-            // initialize the cipher for encrypt mode
-            cipher = Cipher.getInstance("AES/GCM/NoPadding");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
             e.printStackTrace();
         }
 
@@ -316,7 +271,7 @@ public class ImageViewActivity extends AppCompatActivity implements NavigationVi
             /**
              * Initialize the cipher for decryption
              */
-            cipher.init(Cipher.DECRYPT_MODE, skeySpec, ivspec);
+            cipher.init(Cipher.DECRYPT_MODE, desKey);
             /**
              * Initialize input and output streams
              */
@@ -344,8 +299,6 @@ public class ImageViewActivity extends AppCompatActivity implements NavigationVi
             System.out.println(ex);
         } catch (BadPaddingException ex) {
             //Logger.getLogger(FileEncryption.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvalidAlgorithmParameterException e) {
-            e.printStackTrace();
         }
     }
 
@@ -358,7 +311,7 @@ public class ImageViewActivity extends AppCompatActivity implements NavigationVi
             /**
              * Initialize the cipher for encryption
              */
-            cipher.init(Cipher.ENCRYPT_MODE, skeySpec, ivspec);
+            cipher.init(Cipher.ENCRYPT_MODE, desKey);
             /**
              * Initialize input and output streams
              */
@@ -383,8 +336,6 @@ public class ImageViewActivity extends AppCompatActivity implements NavigationVi
             System.out.println(ex);
         } catch (InvalidKeyException ex) {
             //Logger.getLogger();
-        } catch (InvalidAlgorithmParameterException e) {
-            e.printStackTrace();
         }
     }
 
