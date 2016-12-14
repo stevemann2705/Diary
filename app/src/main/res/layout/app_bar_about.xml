@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Diary v8.0 (Hilanivik) for Android"
+        android:text="Diary v9.0 (Hilanivik) for Android"
         android:id="@+id/textView12"
         android:layout_below="@+id/textView11"
         android:layout_centerHorizontal="true"
